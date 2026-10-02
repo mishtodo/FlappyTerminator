@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int _max = 100;
+    [SerializeField] private int _max = 3;
     [SerializeField] private int _current;
 
     public int Max => _max;
@@ -31,13 +31,13 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void TakeHeal(int heal)
-    {
-        if (heal > 0)
-        {
-            _current += heal;
-            _current = Mathf.Min(_current, _max);
-            Changed?.Invoke(_current);
-        }
-    }
+    //public void TakeHeal(int heal)
+    //{
+    //    if (heal > 0)
+    //    {
+    //        _current += heal;
+    //        _current = Mathf.Min(_current, _max);
+    //        Changed?.Invoke(_current);
+    //    }
+    //}
 }

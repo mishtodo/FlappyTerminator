@@ -6,6 +6,7 @@ public abstract class SpawnableObject : MonoBehaviour
     public event Action<SpawnableObject> OnDying;
 
     protected virtual void OnEnable() { }
+    protected virtual void OnDisable() { }
 
     public void InitializeVelocity(Vector2 value)
     {

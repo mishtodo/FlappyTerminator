@@ -4,7 +4,6 @@ using UnityEngine;
 public class Mover : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rigidbody;
-    //[SerializeField] private float _speedX = 250f;
     [SerializeField] private float _jumpForce = 250f;
     [SerializeField] private float _tapForce = 25f;
     [SerializeField] private float _rotationSpeed = 1.5f;
@@ -38,8 +37,8 @@ public class Mover : MonoBehaviour
         _rigidbody.MoveRotation(nextRotation);
     }
 
-    //public void Move(float direction)
-    //{
-    //    _rigidbody.velocity = new Vector2(_speedX * direction * Time.fixedDeltaTime, _rigidbody.velocity.y);
-    //}
+    public void Move(float direction, float speedX)
+    {
+        _rigidbody.velocity = new Vector2(speedX * direction * Time.fixedDeltaTime, _rigidbody.velocity.y);
+    }
 }

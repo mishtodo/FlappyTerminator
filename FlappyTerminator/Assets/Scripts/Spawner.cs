@@ -13,7 +13,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
 
     public event Action<Vector3> ObjectReleased;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _pool = new ObjectPool<T>(
             createFunc: () => CreateFunc(),
