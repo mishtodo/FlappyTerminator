@@ -6,6 +6,7 @@ public class Laserer : MonoBehaviour
     [SerializeField] private Transform _firePoint;
     [SerializeField] private LineRenderer _lineRenderer;
     [SerializeField] private LayerMask _laserMask;
+    [SerializeField] private int _laserDamage = 2;
     [SerializeField] private float _laserDistance = 20f;
     [SerializeField] private float _laserDuration = 0.2f;
 
@@ -22,27 +23,34 @@ public class Laserer : MonoBehaviour
         {
             endPosition = hit.point;
 
-            // if (hit.collider.TryGetComponent(out EnemyHealth enemy)) { enemy.TakeDamage(10); }
-            //Debug.Log($"Лазер попал в: {hit.collider.name}");
+            if (hit.collider.TryGetComponent<Health>(out Health targetHealth))
+                targetHealth.TakeDamage(_laserDamage);
         }
         else
         {
             endPosition = _firePoint.position + (Vector3)(direction * _laserDistance);
         }
 
-        if (_laserVisualRoutine != null) StopCoroutine(_laserVisualRoutine);
+        if (_laserVisualRoutine != null) 
+            StopCoroutine(_laserVisualRoutine);
+
         RestartCoroutine(endPosition);
     }
         
-    public void StopCoroutine()
+    public void StopLaserRoutine()
     {
         if (_laserVisualRoutine != null)
-            StopAllCoroutines();
+        {
+            StopCoroutine(_laserVisualRoutine);
+            _laserVisualRoutine = null;
+        }
+
+        _lineRenderer.enabled = false;
     }
 
     private void RestartCoroutine(Vector3 end)
     {
-        StartCoroutine(ShowLaserRoutine(_firePoint.position, end));
+        _laserVisualRoutine = StartCoroutine(ShowLaserRoutine(_firePoint.position, end));
     }
 
     private IEnumerator ShowLaserRoutine(Vector3 start, Vector3 end)

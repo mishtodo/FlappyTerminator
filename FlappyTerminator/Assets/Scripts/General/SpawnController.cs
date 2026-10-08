@@ -6,6 +6,6 @@ public class SpawnController : MonoBehaviour
 
     void Start()
     {
-        _enemySpawner.Spawn(_enemySpawner.transform.position, _enemySpawner.transform.rotation);
+        //_enemySpawner.Spawn(_enemySpawner.transform.position, _enemySpawner.transform.rotation);
     }
 }

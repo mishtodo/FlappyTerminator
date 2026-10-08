@@ -1,19 +1,19 @@
 using UnityEngine;
 
 [RequireComponent(typeof(InputReader), typeof(Mover))]
-[RequireComponent(typeof(Shooter), typeof(Laserer))]
-public class Player : MonoBehaviour
+[RequireComponent(typeof(PlayerShooter), typeof(Laserer))]
+public class Player : SpawnableObject
 {
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private Mover _mover;
-    [SerializeField] private Shooter _shooter;
+    [SerializeField] private PlayerShooter _playerShooter;
     [SerializeField] private Laserer _laserer;
 
     private void Awake()
     {
         _inputReader = GetComponent<InputReader>();
         _mover = GetComponent<Mover>();
-        _shooter = GetComponent<Shooter>();
+        _playerShooter = GetComponent<PlayerShooter>();
         _laserer = GetComponent<Laserer>();
         //_groundDetector = GetComponent<GroundDetector>();
     }
@@ -21,13 +21,28 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (_inputReader.GetIsShooting())
-            _shooter.Shoot();
+            _playerShooter.Shoot();
 
         if (_inputReader.GetIsLasering())
             _laserer.ShootLaser();
 
+        //Variant A
+        //if (_inputReader.GetIsJump())
+        //{
+        //    _mover.Jump();
+        //}
+        //else if (_inputReader.GetIsJumpCanceled())
+        //{
+        //    _mover.CancelJump();
+        //}
+        //
+        //_mover.Fall();
+
+        //Variant B
         if (_inputReader.GetIsJump())
             _mover.Jump();
+        else if (_inputReader.GetIsJumpCanceled())
+            _mover.CancelJump();
         else
             _mover.Fall();
     }

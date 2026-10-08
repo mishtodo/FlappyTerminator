@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6529606324514641095}
   - component: {fileID: -2544673892321825000}
   - component: {fileID: 1587592324334001248}
-  - component: {fileID: 2492538175074138756}
+  - component: {fileID: 6767324090125366303}
   m_Layer: 8
   m_Name: EnemyBullet
   m_TagString: Untagged
@@ -113,7 +113,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 2
 --- !u!58 &1587592324334001248
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.49999997
---- !u!114 &2492538175074138756
+--- !u!114 &6767324090125366303
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8966865798663617945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e70c8b6ac09720144baea8d5ca091d6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0dbb807e8c727a7428382265904a5a65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletDamage: 20
+  Damage: 1

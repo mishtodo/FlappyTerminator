@@ -9,6 +9,7 @@ public class InputReader : MonoBehaviour
     private bool _isShooting;
     private bool _isLasering;
     private bool _isJump;
+    private bool _isJumpCanceled;
 
     private void Update()
     {
@@ -20,11 +21,15 @@ public class InputReader : MonoBehaviour
 
         if (Input.GetKeyDown(Space))
             _isJump = true;
+
+        if (Input.GetKeyUp(Space))
+            _isJumpCanceled = true;
     }
 
     public bool GetIsShooting() => GetBoolAsTrigger(ref _isShooting);
     public bool GetIsLasering() => GetBoolAsTrigger(ref _isLasering);
     public bool GetIsJump() => GetBoolAsTrigger(ref _isJump);
+    public bool GetIsJumpCanceled() => GetBoolAsTrigger(ref _isJumpCanceled);
 
     private bool GetBoolAsTrigger(ref bool value)
     {

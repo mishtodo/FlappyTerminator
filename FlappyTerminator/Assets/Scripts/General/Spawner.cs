@@ -13,8 +13,11 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
 
     public event Action<Vector3> ObjectReleased;
 
-    protected virtual void Awake()
+    public void Initialize(T prefab, GameObject container)
     {
+        _prefab = prefab;
+        _objectPool = container;
+
         _pool = new ObjectPool<T>(
             createFunc: () => CreateFunc(),
             actionOnGet: (T) => ActionOnGet(T),

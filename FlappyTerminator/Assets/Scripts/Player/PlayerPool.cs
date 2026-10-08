@@ -1,0 +1,1 @@
+public class PlayerPool : Spawner<Player> { }

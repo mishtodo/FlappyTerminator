@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 7273115646406649035}
   - component: {fileID: -9027412036325523306}
   - component: {fileID: 5712799949857801716}
+  - component: {fileID: -7116394994869140249}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -259,11 +260,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 0}
+  _currentRotationMode: 1
   _jumpForce: 250
-  _tapForce: 25
   _rotationSpeed: 1.5
   _minRotationZ: -45
   _maxRotationZ: 45
+  _jumpCutMultiplier: 0.25
 --- !u!114 &-9027412036325523306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,6 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mover: {fileID: 0}
+  _health: {fileID: 0}
   _direcion: -1
   _speedX: 150
 --- !u!114 &5712799949857801716
@@ -293,3 +296,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _max: 1
   _current: 1
+--- !u!114 &-7116394994869140249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169649920391200374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aecda688d46de042aca1f8c150f77cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FirePoint: {fileID: 3545544830554547492}
+  DefaultBulletSpeed: 13
+  _shootInterval: 1
+  _enemyBulletSpeed: 10
