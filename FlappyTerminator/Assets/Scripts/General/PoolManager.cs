@@ -1,17 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance { get; private set; }
 
-    [Header("Префабы объектов")]
     [SerializeField] private Player _playerPrefab;
-    [SerializeField] private Enemy _enemyPrefab;
+    [SerializeField] private Enemy[] _enemyPrefabs;
     [SerializeField] private PlayerBullet _playerBulletPrefab;
     [SerializeField] private EnemyBullet _enemyBulletPrefab;
 
     public PlayerPool PlayerPool { get; private set; }
-    public EnemyPool EnemyPool { get; private set; }
+    public List<EnemyPool> EnemyPools { get; private set; } = new List<EnemyPool>();
     public PlayerBulletPool PlayerBulletPool { get; private set; }
     public EnemyBulletPool EnemyBulletPool { get; private set; }
 
@@ -45,8 +45,14 @@ public class PoolManager : MonoBehaviour
         PlayerPool = playerPoolContainer.AddComponent<PlayerPool>();
         PlayerPool.Initialize(_playerPrefab, playerPoolContainer);
 
-        EnemyPool = enemyPoolContainer.AddComponent<EnemyPool>();
-        EnemyPool.Initialize(_enemyPrefab, enemyPoolContainer);
+        for (int i = 0; i < _enemyPrefabs.Length; i++)
+        {
+            if (_enemyPrefabs[i] == null) continue;
+
+            EnemyPool newPool = enemyPoolContainer.AddComponent<EnemyPool>();
+            newPool.Initialize(_enemyPrefabs[i], enemyPoolContainer);
+            EnemyPools.Add(newPool);
+        }
 
         PlayerBulletPool = playerBulletContainer.AddComponent<PlayerBulletPool>();
         PlayerBulletPool.Initialize(_playerBulletPrefab, playerBulletContainer);

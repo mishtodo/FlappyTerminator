@@ -96,12 +96,12 @@ GameObject:
   - component: {fileID: 8794797134978603766}
   - component: {fileID: 2025283343786594650}
   - component: {fileID: 2173804818286905589}
-  - component: {fileID: 7273115646406649035}
-  - component: {fileID: -9027412036325523306}
   - component: {fileID: 5712799949857801716}
   - component: {fileID: -7116394994869140249}
+  - component: {fileID: -7657432095804479912}
+  - component: {fileID: -3989108629602268009}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: ParabolicEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.5330188, b: 0.5330188, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -246,42 +246,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
---- !u!114 &7273115646406649035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169649920391200374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43abdceafb16b2e479dd0093869a5499, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 0}
-  _currentRotationMode: 1
-  _jumpForce: 250
-  _rotationSpeed: 1.5
-  _minRotationZ: -45
-  _maxRotationZ: 45
-  _jumpCutMultiplier: 0.25
---- !u!114 &-9027412036325523306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169649920391200374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b238fc5ccd30e3e4ea1ade835bb37a96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mover: {fileID: 0}
-  _health: {fileID: 0}
-  _direcion: -1
-  _speedX: 150
+  m_Constraints: 4
 --- !u!114 &5712799949857801716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,3 +277,32 @@ MonoBehaviour:
   DefaultBulletSpeed: 13
   _shootInterval: 1
   _enemyBulletSpeed: 10
+--- !u!114 &-7657432095804479912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169649920391200374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e67d97190531844a422a1f3e05052f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 5712799949857801716}
+  _parabolicMover: {fileID: -3989108629602268009}
+--- !u!114 &-3989108629602268009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169649920391200374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb1d7006cd2925746927775b8f67d8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedX: 3
+  _frequency: 0.5
+  _amplitude: 2

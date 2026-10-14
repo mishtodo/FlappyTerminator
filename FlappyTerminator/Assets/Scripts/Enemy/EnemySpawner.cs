@@ -7,8 +7,11 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float _spawnInterval = 2.5f;
     [SerializeField] private float _minSpawnY = -3f;
     [SerializeField] private float _maxSpawnY = 4f;
+    [SerializeField] private float _waveSize = 3f;
 
     private Coroutine _spawnCoroutine;
+    private int _spawnedInCurrentWave = 0;
+    private int _currentEnemyIndex = 0;
 
     private void Start()
     {
@@ -38,9 +41,21 @@ public class EnemySpawner : MonoBehaviour
     {
         if (PoolManager.Instance == null) return;
 
+        var pools = PoolManager.Instance.EnemyPools;
+        if (pools.Count == 0) return;
+
         float randomY = Random.Range(_minSpawnY, _maxSpawnY);
         Vector3 spawnPosition = new Vector3(transform.position.x, randomY, 0f);
-        Enemy newEnemy = PoolManager.Instance.EnemyPool.Spawn(spawnPosition, Quaternion.identity);
+
+        Enemy newEnemy = pools[_currentEnemyIndex].Spawn(spawnPosition, Quaternion.identity);
+
+        _spawnedInCurrentWave++;
+
+        if (_spawnedInCurrentWave >= _waveSize)
+        {
+            _spawnedInCurrentWave = 0;
+            _currentEnemyIndex = (_currentEnemyIndex + 1) % pools.Count;
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -1,18 +1,18 @@
 using UnityEngine;
 
-[RequireComponent(typeof(InputReader), typeof(Mover))]
+[RequireComponent(typeof(InputReader), typeof(PlayerMover))]
 [RequireComponent(typeof(PlayerShooter), typeof(Laserer))]
 public class Player : SpawnableObject
 {
     [SerializeField] private InputReader _inputReader;
-    [SerializeField] private Mover _mover;
+    [SerializeField] private PlayerMover _playerMover;
     [SerializeField] private PlayerShooter _playerShooter;
     [SerializeField] private Laserer _laserer;
 
     private void Awake()
     {
         _inputReader = GetComponent<InputReader>();
-        _mover = GetComponent<Mover>();
+        _playerMover = GetComponent<PlayerMover>();
         _playerShooter = GetComponent<PlayerShooter>();
         _laserer = GetComponent<Laserer>();
         //_groundDetector = GetComponent<GroundDetector>();
@@ -40,10 +40,10 @@ public class Player : SpawnableObject
 
         //Variant B
         if (_inputReader.GetIsJump())
-            _mover.Jump();
+            _playerMover.Jump();
         else if (_inputReader.GetIsJumpCanceled())
-            _mover.CancelJump();
+            _playerMover.CancelJump();
         else
-            _mover.Fall();
+            _playerMover.Fall();
     }
 }
