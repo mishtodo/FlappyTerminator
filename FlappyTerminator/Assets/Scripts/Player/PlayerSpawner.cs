@@ -11,45 +11,58 @@ public class PlayerSpawner : MonoBehaviour
     private Health _playerHealth;
     public Player Player { get; private set; }
 
-    private void OnEnable()
+    private void Start()
     {
-
+        SpawnActivePlayer();
     }
 
     private void OnDisable()
     {
-        if (_playerHealth != null)
-            _playerHealth.Dying -= HandlePlayerDeath;
+        UnsubscribeFromPlayer();
     }
 
-    private void Start()
+    private void SpawnActivePlayer()
     {
         Player = PoolManager.Instance.PlayerPool.Spawn(_spawnPoint.position, _spawnPoint.rotation);
 
         if (Player.TryGetComponent<Health>(out Health health))
         {
-            PlayerSpawned?.Invoke(health);
             _playerHealth = health;
             _playerHealth.Dying += HandlePlayerDeath;
+            PlayerSpawned?.Invoke(health);
         }
+    }
+
+    private void UnsubscribeFromPlayer()
+    {
+        if (_playerHealth != null)
+            _playerHealth.Dying -= HandlePlayerDeath;
+
+        _playerHealth = null;
     }
 
     private void HandlePlayerDeath(Health health)
     {
+        UnsubscribeFromPlayer();
         PlayerDespawned?.Invoke(health);
         Player.NotifyDying();
+
     }
 
     public void ResetPlayer()
     {
-        if (!Player.isActiveAndEnabled)
+        if (Player != null && Player.isActiveAndEnabled)
         {
-            Player = PoolManager.Instance.PlayerPool.Spawn(_spawnPoint.position, _spawnPoint.rotation);
+            if (_playerHealth != null)
+            {
+                HandlePlayerDeath(_playerHealth);
+            }
         }
         else
         {
-            Player.NotifyDying();
-            Player = PoolManager.Instance.PlayerPool.Spawn(_spawnPoint.position, _spawnPoint.rotation);
+            UnsubscribeFromPlayer();
         }
+
+        SpawnActivePlayer();
     }
 }

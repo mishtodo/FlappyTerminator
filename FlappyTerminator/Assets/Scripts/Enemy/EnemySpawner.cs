@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -15,27 +16,40 @@ public class EnemySpawner : MonoBehaviour
     public int DespawnCounts { get; private set; }
 
     private Coroutine _spawnCoroutine;
-    private Health _enemyHealh;
     private int _spawnedInCurrentWave = 0;
     private int _currentEnemyIndex = 0;
 
+    private readonly List<Enemy> _activeEnemies = new List<Enemy>();
+
     private void OnDisable()
     {
-        if (_enemyHealh != null)
-            _enemyHealh.Dying -= HandleEnemyDeath;
+        StopSpawnRoutine();
+        ClearAllActiveEnemies();
     }
 
     private void Start()
     {
+        StartSpawnRoutine();
+    }
+
+    private void StartSpawnRoutine()
+    {
+        StopSpawnRoutine();
         _spawnCoroutine = StartCoroutine(SpawnRoutine());
     }
 
-    private void OnDestroy()
+    private void StopSpawnRoutine()
     {
         if (_spawnCoroutine != null)
         {
             StopCoroutine(_spawnCoroutine);
+            _spawnCoroutine = null;
         }
+    }
+
+    private void OnDestroy()
+    {
+        StopSpawnRoutine();
     }
 
     private IEnumerator SpawnRoutine()
@@ -60,8 +74,12 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = new Vector3(transform.position.x, randomY, 0f);
 
         Enemy newEnemy = pools[_currentEnemyIndex].Spawn(spawnPosition, Quaternion.identity);
+        _activeEnemies.Add(newEnemy);
+
         if (newEnemy.gameObject.TryGetComponent<Health>(out Health health))
+        {
             health.Dying += HandleEnemyDeath;
+        }
 
         _spawnedInCurrentWave++;
 
@@ -74,16 +92,50 @@ public class EnemySpawner : MonoBehaviour
 
     private void HandleEnemyDeath(Health health)
     {
+        health.Dying -= HandleEnemyDeath;
+
         DespawnCounts++;
         MetricsChanged?.Invoke(DespawnCounts);
 
         if (health.gameObject.TryGetComponent<Enemy>(out Enemy enemy))
+        {
+            _activeEnemies.Remove(enemy);
             enemy.NotifyDying();
+        }
     }
+
+    private void ClearAllActiveEnemies()
+    {
+        for (int i = _activeEnemies.Count - 1; i >= 0; i--)
+        {
+            Enemy enemy = _activeEnemies[i];
+            if (enemy != null)
+            {
+                if (enemy.TryGetComponent<Health>(out Health health))
+                {
+                    health.Dying -= HandleEnemyDeath;
+                }
+
+                enemy.NotifyDying();
+            }
+        }
+
+        _activeEnemies.Clear();
+    }
+
 
     public void ResetEnemies()
     {
+        StopSpawnRoutine();
 
+        ClearAllActiveEnemies();
+
+        DespawnCounts = 0;
+        _spawnedInCurrentWave = 0;
+        _currentEnemyIndex = 0;
+        MetricsChanged?.Invoke(DespawnCounts);
+
+        StartSpawnRoutine();
     }
 
     private void OnDrawGizmosSelected()
