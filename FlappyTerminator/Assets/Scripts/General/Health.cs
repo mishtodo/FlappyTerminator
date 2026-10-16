@@ -6,10 +6,16 @@ public class Health : MonoBehaviour
     [SerializeField] private int _max = 3;
     [SerializeField] private int _current;
 
+    public int Current => _current;
     public int Max => _max;
 
     public event Action<int> Changed;
     public event Action<Health> Dying;
+
+    private void OnEnable()
+    {
+        _current = _max;
+    }
 
     private void Start()
     {

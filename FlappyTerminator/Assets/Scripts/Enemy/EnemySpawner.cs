@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,9 +10,20 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float _maxSpawnY = 4f;
     [SerializeField] private float _waveSize = 3f;
 
+    public event Action<int> MetricsChanged;
+
+    public int DespawnCounts { get; private set; }
+
     private Coroutine _spawnCoroutine;
+    private Health _enemyHealh;
     private int _spawnedInCurrentWave = 0;
     private int _currentEnemyIndex = 0;
+
+    private void OnDisable()
+    {
+        if (_enemyHealh != null)
+            _enemyHealh.Dying -= HandleEnemyDeath;
+    }
 
     private void Start()
     {
@@ -44,10 +56,12 @@ public class EnemySpawner : MonoBehaviour
         var pools = PoolManager.Instance.EnemyPools;
         if (pools.Count == 0) return;
 
-        float randomY = Random.Range(_minSpawnY, _maxSpawnY);
+        float randomY = UnityEngine.Random.Range(_minSpawnY, _maxSpawnY);
         Vector3 spawnPosition = new Vector3(transform.position.x, randomY, 0f);
 
         Enemy newEnemy = pools[_currentEnemyIndex].Spawn(spawnPosition, Quaternion.identity);
+        if (newEnemy.gameObject.TryGetComponent<Health>(out Health health))
+            health.Dying += HandleEnemyDeath;
 
         _spawnedInCurrentWave++;
 
@@ -56,6 +70,20 @@ public class EnemySpawner : MonoBehaviour
             _spawnedInCurrentWave = 0;
             _currentEnemyIndex = (_currentEnemyIndex + 1) % pools.Count;
         }
+    }
+
+    private void HandleEnemyDeath(Health health)
+    {
+        DespawnCounts++;
+        MetricsChanged?.Invoke(DespawnCounts);
+
+        if (health.gameObject.TryGetComponent<Enemy>(out Enemy enemy))
+            enemy.NotifyDying();
+    }
+
+    public void ResetEnemies()
+    {
+
     }
 
     private void OnDrawGizmosSelected()

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(InputReader), typeof(PlayerMover))]
-[RequireComponent(typeof(PlayerShooter), typeof(Laserer))]
+[RequireComponent(typeof(PlayerShooter), typeof(Laserer), typeof(Health))]
 public class Player : SpawnableObject
 {
     [SerializeField] private InputReader _inputReader;

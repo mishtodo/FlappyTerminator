@@ -11,7 +11,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
     private int _poolDefaultCapacity = 10;
     private int _poolMaxCapacity = 20;
 
-    public event Action<Vector3> ObjectReleased;
+    //public event Action<Vector3> ObjectReleased;
 
     public void Initialize(T prefab, GameObject container)
     {
@@ -59,7 +59,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
 
     private void HandleObjectDestroyed(SpawnableObject obj)
     {
-        ObjectReleased?.Invoke(obj.transform.position);
+        //ObjectReleased?.Invoke(obj.transform.position);
         _pool.Release((T)obj);
     }
 }
