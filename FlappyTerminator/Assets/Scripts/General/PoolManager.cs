@@ -30,6 +30,13 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    public void ClearAllBullets()
+    {
+        if (PlayerBulletPool != null) PlayerBulletPool.ClearActiveObjects();
+
+        if (EnemyBulletPool != null) EnemyBulletPool.ClearActiveObjects();
+    }
+
     private void InitPools()
     {
         GameObject playerPoolContainer = new GameObject("Container_Players");

@@ -290,7 +290,7 @@ MonoBehaviour:
   FirePoint: {fileID: 3545544830554547492}
   DefaultBulletSpeed: 13
   _shootInterval: 1
-  _enemyBulletSpeed: 10
+  _enemyBulletSpeed: 11
 --- !u!114 &2086956892711122062
 MonoBehaviour:
   m_ObjectHideFlags: 0

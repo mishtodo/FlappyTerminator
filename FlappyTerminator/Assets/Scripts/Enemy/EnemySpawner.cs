@@ -123,7 +123,6 @@ public class EnemySpawner : MonoBehaviour
         _activeEnemies.Clear();
     }
 
-
     public void ResetEnemies()
     {
         StopSpawnRoutine();

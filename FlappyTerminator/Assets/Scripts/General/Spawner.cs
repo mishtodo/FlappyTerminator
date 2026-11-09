@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,6 +10,8 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
     private ObjectPool<T> _pool;
     private int _poolDefaultCapacity = 10;
     private int _poolMaxCapacity = 20;
+
+    private readonly List<T> _activeObjects = new List<T>();
 
     //public event Action<Vector3> ObjectReleased;
 
@@ -37,6 +39,19 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
         return obj;
     }
 
+    public void ClearActiveObjects()
+    {
+        for (int i = _activeObjects.Count - 1; i >= 0; i--)
+        {
+            if (_activeObjects[i] != null)
+            {
+                _activeObjects[i].NotifyDying();
+            }
+        }
+
+        _activeObjects.Clear();
+    }
+
     private T CreateFunc()
     {
         T obj = Instantiate(_prefab, Vector3.zero, Quaternion.identity);
@@ -47,6 +62,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
     {
         obj.OnDying += HandleObjectDestroyed;
         obj.gameObject.SetActive(true);
+        _activeObjects.Add(obj);
     }
 
     private void ActionOnRelease(T obj)
@@ -55,6 +71,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
         obj.InitializePosition(_objectPool.transform.position);
         obj.InitializeRotation(_objectPool.transform.rotation);
         obj.gameObject.SetActive(false);
+        _activeObjects.Remove(obj);
     }
 
     private void HandleObjectDestroyed(SpawnableObject obj)

@@ -27,8 +27,13 @@ public class GameManager : MonoBehaviour
     private void RestartGame()
     {
         _restartButton.SetDisable();
+
+        if (PoolManager.Instance != null)
+            PoolManager.Instance.ClearAllBullets();
+
         _enemySpawner.ResetEnemies();
         _playerSpawner.ResetPlayer();
+
         Time.timeScale = 1;
     }
 }
